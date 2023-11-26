@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+
+<html>
+     <head>
+         <title>Login Page</title>
+     </head>
+    <body style="background-color:powderblue">
+
+    <h1> Login Here</h1>
+
+    {% if message %}
+     <p style="color:green">{{ message }}</p>
+    {% endif %}
+
+    <form action="/perform_login", method="post">
+        <label>Enter Email</label><br>
+        <input type="email" name="user_ka_email" required><br>
+        <label>Enter Password</label><br>
+        <input type="password" name="user_ka_password" required><br><br>
+        <input type="submit" value="Login">
+    </form>
+    <p>Not a member? <a href="/register">Register here</a></p>
+    </body>
+</html>
