@@ -102,3 +102,32 @@ def batterAPI(batsman):
                          "heightScore":str(height_score),
                          "NotOut":str(not_out)}}
     return response
+
+def bowlerAPI(bowler):
+    total_innings = df[df['bowler'] == bowler].groupby("ID")['isWicketDelivery'].sum().shape[0]
+    total_wickets = df[df['bowler'] == bowler].groupby('bowler')['isWicketDelivery'].sum().values[0]
+
+    bowling_fig1 = df[df['bowler'] == bowler].groupby("ID")[['batsman_run','isWicketDelivery']].sum().sort_values(by=['isWicketDelivery','batsman_run'],ascending=[False,True]).head(1).values[0].tolist()[0]
+    bowling_fig2 = df[df['bowler'] == bowler].groupby("ID")[['batsman_run','isWicketDelivery']].sum().sort_values(by=['isWicketDelivery','batsman_run'],ascending=[False,True]).head(1).values[0].tolist()[1]
+    best_figure = str(bowling_fig2)+ "/" + str(bowling_fig1)
+    temp_df = df[df['bowler'] == bowler].groupby('ID')['isWicketDelivery'].sum().reset_index()
+    three_wickets = temp_df[temp_df['isWicketDelivery'] >= 3].shape[0]
+    fours = df[(df['batsman_run'] == 4) & (df['bowler'] == 'TA Boult')].shape[0]
+    sixs = df[(df['batsman_run'] == 6) & (df['bowler'] == 'TA Boult')].shape[0]
+    balls_bowled = round(df[df['bowler'] == bowler].shape[0])
+    overs_bowled = round(df[df['bowler'] == bowler].shape[0]/6)
+    total_runs_given = df[df['bowler'] == bowler]['batsman_run'].sum()
+    economy_rate = total_runs_given/overs_bowled
+    strike_rate = balls_bowled/total_wickets
+    avg = total_runs_given/total_wickets
+
+    response = {bowler:{"Innings":str(total_innings),
+                        "Wickets":str(total_wickets),
+                        "Economy_rate":str(economy_rate),
+                        "average":str(avg),
+                        "strike_rate":str(strike_rate),
+                        "fours":str(fours),
+                        "sixs":str(sixs),
+                        "best_figure":str(best_figure),
+                        "3+W":str(three_wickets)}}
+    return response

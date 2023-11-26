@@ -62,4 +62,9 @@ def batter():
     response = ipl.batterAPI(batsman)
     return jsonify(response)
 
+@app.route('/api/bowler-record')
+def bowler():
+    bowler = request.args.get('bowler')
+    response = ipl.bowlerAPI(bowler)
+    return jsonify(response)
 app.run(debug=True)
